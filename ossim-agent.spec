@@ -25,13 +25,15 @@ correlation engine for further process.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/{ossim/agent,sysconfig,init.d,logrotate.d}
+install -d $RPM_BUILD_ROOT%{_sysconfdir}/{ossim/agent,sysconfig,rc.d/init.d,logrotate.d}
+
 python setup.py install --root=$RPM_BUILD_ROOT
 
-install contrib/fedora/init.d/ossim-agent $RPM_BUILD_ROOT%{_sysconfdir}/init.d/%{name}
-install etc/logrotate.d/ossim-agent $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/%{name}
-install contrib/fedora/sysconfig/ossim-agent $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/%{name}
+install contrib/fedora/init.d/ossim-agent $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
+install etc/logrotate.d/ossim-agent $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
+install contrib/fedora/sysconfig/ossim-agent $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
+rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}/*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -48,7 +50,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc  %{_docdir}/%{name}
+%doc doc/{ChangeLog,INSTALL,LICENSE,Leeme.ossim.snort.rtf,README.plugins,TODO,ossim-agent.xml}
 # common OSSIM dir
 %dir %{_sysconfdir}/ossim/agent
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ossim/agent/*.cfg
